@@ -10,4 +10,8 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+
+    <string name="today_label">Today</string>
+    <string name="prompt_water_used">0</string>
+    <string name="water_used_description">water used in liters</string>
 </resources>
