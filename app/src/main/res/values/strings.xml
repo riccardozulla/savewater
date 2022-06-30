@@ -14,4 +14,5 @@
     <string name="today_label">Today</string>
     <string name="prompt_water_used">0</string>
     <string name="water_used_description">water used in liters</string>
+    <string name="fab_content_description">Add button</string>
 </resources>
