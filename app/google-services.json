@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "728604151966",
+    "project_id": "save-water-2704d",
+    "storage_bucket": "save-water-2704d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:728604151966:android:97b51b0fcf39f8bc6f2b8f",
+        "android_client_info": {
+          "package_name": "it.units.sim.savewater"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "728604151966-lsiqc9k4jetd5qva2aja2031nchephef.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwqNMUzRXs9dKMk0uzhCJHf87A-YosX9M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "728604151966-lsiqc9k4jetd5qva2aja2031nchephef.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
