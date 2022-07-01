@@ -16,4 +16,5 @@
     <string name="water_used_description">water used in liters</string>
     <string name="fab_content_description">Add button</string>
     <string name="water_consumption_label">liters</string>
+    <string name="menu_diary">Diary</string>
 </resources>

@@ -1,7 +1,6 @@
 package it.units.sim.savewater;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_home, R.id.nav_diary, R.id.nav_slideshow)
                 .setOpenableLayout(drawer)
                 .build();
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
