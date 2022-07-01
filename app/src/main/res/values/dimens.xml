@@ -10,4 +10,6 @@
     <dimen name="list_margin">16dp</dimen>
     <dimen name="item_margin">6dp</dimen>
     <dimen name="item_button_margin">6dp</dimen>
+    <dimen name="login_side_margin">24dp</dimen>
+    <dimen name="login_text_spacing">8dp</dimen>
 </resources>
