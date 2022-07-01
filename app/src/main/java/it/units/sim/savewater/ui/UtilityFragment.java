@@ -1,38 +1,89 @@
 package it.units.sim.savewater.ui;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import it.units.sim.savewater.R;
-import it.units.sim.savewater.ui.placeholder.PlaceholderContent;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 
-public class UtilityFragment extends Fragment {
+import it.units.sim.savewater.databinding.FragmentUtilityBinding;
+
+public class UtilityFragment extends Fragment implements UtilityAdapter.OnUtilitySelectedListener {
+
+    private static final String TAG = "UtilityFragment";
+    private UtilityAdapter mAdapter;
+    private FragmentUtilityBinding binding;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        binding = FragmentUtilityBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        Query query = FirebaseFirestore.getInstance().collection("utilities");
+
+        // RecyclerView
+        mAdapter = new UtilityAdapter(query, this) {
+            @Override
+            protected void onDataChanged() {
+                //TODO: do something when data retrieved
+            }
+
+            @Override
+            protected void onError(FirebaseFirestoreException e) {
+                // Show a snackbar on errors
+                Snackbar.make(binding.getRoot(),
+                        "Error: check logs for info.", Snackbar.LENGTH_LONG).show();
+            }
+        };
+
+        RecyclerView recyclerView = binding.list;
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        recyclerView.setAdapter(mAdapter);
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_utility, container, false);
+    public void onStart() {
+        super.onStart();
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyUtilityRecyclerViewAdapter(PlaceholderContent.ITEMS));
+        //TODO: check if user is authenticated
+
+        // Start listening for Firestore updates
+        if (mAdapter != null) {
+            mAdapter.startListening();
         }
-        return view;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAdapter != null) {
+            mAdapter.stopListening();
+        }
+    }
+
+    @Override
+    public void onUtilitySelected(DocumentSnapshot utility) {
+        Log.w(TAG, "utility selected");
+        //TODO: do something
     }
 }
