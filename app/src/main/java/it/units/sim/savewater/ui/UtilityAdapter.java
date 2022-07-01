@@ -62,8 +62,9 @@ public class UtilityAdapter extends FirestoreAdapter<UtilityAdapter.ViewHolder> 
 
             Utility utility = snapshot.toObject(Utility.class);
             Resources resources = itemView.getResources();
-            binding.itemNumber.setText(utility.getName());
-            binding.content.setText(String.valueOf(utility.getWaterConsumption()));
+            binding.itemName.setText(utility.getName());
+            binding.itemWaterConsumption.setText(String.valueOf(utility.getWaterConsumption()));
+            binding.itemDescription.setText(utility.getDescription());
 
 
             // Click listener
