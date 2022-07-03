@@ -1,9 +1,9 @@
 package it.units.sim.savewater.ui.auth;
 
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,8 +44,7 @@ public class RegistrationFragment extends Fragment {
         binding.buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showProgressBar();
-                createNewUser();
+                signUp();
 
             }
         });
@@ -53,27 +52,63 @@ public class RegistrationFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void createNewUser() {
-        Editable email = binding.editTextNewEmail.getText();
-        Editable password = binding.editTextNewPassword.getText();
-        firebaseAuth.createUserWithEmailAndPassword(email.toString(), password.toString()).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                Log.d(TAG, "User created");
-                onAuthSuccess(authResult.getUser());
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "User creation failed");
-                Snackbar.make(requireView(), "Sign up failed", Snackbar.LENGTH_LONG).show();
-            }
-        });
+    private void signUp() {
+        if (!areInputsValid()) {
+            Snackbar.make(requireView(), "Inputs not valid", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        showProgressBar();
+        firebaseAuth.createUserWithEmailAndPassword(
+                        binding.editTextNewEmail.getText().toString(), binding.editTextNewPassword.getText().toString()).
+                addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        hideProgressBar();
+                        if (task.isSuccessful()) {
+                            onAuthSuccess(task.getResult().getUser());
+                        } else {
+                            Log.w(TAG, "User creation failed");
+                            Snackbar.make(requireView(), "Sign up failed", Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 
     private void onAuthSuccess(FirebaseUser user) {
         hideProgressBar();
         Navigation.findNavController(requireView()).navigate(R.id.action_registrationFragment_to_nav_home);
+    }
+
+    private boolean areInputsValid() {
+        boolean result = true;
+
+        if (TextUtils.isEmpty(binding.editTextName.getText()) || !binding.editTextName.getText().toString().matches("[a-zA-Z]+")) {
+            binding.editTextName.setError("Not valid");
+            result = false;
+        }
+
+        if (TextUtils.isEmpty(binding.editTextSurname.getText()) || !binding.editTextSurname.getText().toString().matches("[a-zA-Z]+")) {
+            binding.editTextSurname.setError("Not valid");
+            result = false;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(binding.editTextNewEmail.getText()).matches()) {
+            binding.editTextNewEmail.setError("Email format not valid");
+            result = false;
+        }
+
+        if (binding.editTextNewPassword.getText().length() < 6) {
+            binding.editTextNewPassword.setError("Password must have at least 6 characters");
+            result = false;
+        }
+
+        if (!TextUtils.equals(binding.editTextNewPassword.getText().toString(), binding.editTextConfirmPassword.getText().toString())) {
+            binding.editTextConfirmPassword.setError("Passwords must be equal");
+            result = false;
+        }
+
+        return result;
     }
 
     private void showProgressBar() {
@@ -83,6 +118,7 @@ public class RegistrationFragment extends Fragment {
     private void hideProgressBar() {
         binding.progressBarRegistration.setVisibility(View.GONE);
     }
+
 
     @Override
     public void onDestroyView() {
