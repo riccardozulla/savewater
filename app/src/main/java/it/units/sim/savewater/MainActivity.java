@@ -1,5 +1,6 @@
 package it.units.sim.savewater;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,12 +15,15 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import it.units.sim.savewater.databinding.ActivityMainBinding;
+import it.units.sim.savewater.ui.auth.AuthActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private AppBarConfiguration mAppBarConfiguration;
     private NavController mNavController;
     private ActivityMainBinding binding;
@@ -52,6 +56,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if (!isUserAuthenticated()) {
+            startActivity(new Intent(this, AuthActivity.class));
+        }
+    }
+
+    private boolean isUserAuthenticated() {
+        return firebaseAuth.getCurrentUser() != null;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -61,7 +77,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         //TODO: add action to menu items
+        if (item.getItemId() == R.id.action_sign_out) {
+            signOut();
+            refreshActivity();
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void refreshActivity() {
+        Intent refresh = getIntent();
+        finish();
+        startActivity(refresh);
+    }
+
+    private void signOut() {
+        firebaseAuth.signOut();
     }
 
     @Override

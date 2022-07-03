@@ -1,5 +1,6 @@
 package it.units.sim.savewater.ui.auth;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import it.units.sim.savewater.MainActivity;
 import it.units.sim.savewater.R;
 import it.units.sim.savewater.databinding.FragmentRegistrationBinding;
 import it.units.sim.savewater.model.User;
@@ -82,7 +84,7 @@ public class RegistrationFragment extends Fragment {
         String name = binding.editTextName.getText().toString();
         String surname = binding.editTextSurname.getText().toString();
         writeUserInfo(firebaseUser.getUid(), name, surname);
-        Navigation.findNavController(requireView()).navigate(R.id.action_registrationFragment_to_nav_home);
+        startActivity(new Intent(requireActivity(), MainActivity.class));
     }
 
     private void writeUserInfo(String uid, String name, String surname) {
