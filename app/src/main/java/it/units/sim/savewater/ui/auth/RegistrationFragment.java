@@ -19,13 +19,16 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import it.units.sim.savewater.R;
 import it.units.sim.savewater.databinding.FragmentRegistrationBinding;
+import it.units.sim.savewater.model.User;
 
 public class RegistrationFragment extends Fragment {
     private static final String TAG = "RegistrationFragment";
     private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private FragmentRegistrationBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -75,9 +78,17 @@ public class RegistrationFragment extends Fragment {
                 });
     }
 
-    private void onAuthSuccess(FirebaseUser user) {
-        hideProgressBar();
+    private void onAuthSuccess(FirebaseUser firebaseUser) {
+        String name = binding.editTextName.getText().toString();
+        String surname = binding.editTextSurname.getText().toString();
+        writeUserInfo(firebaseUser.getUid(), name, surname);
         Navigation.findNavController(requireView()).navigate(R.id.action_registrationFragment_to_nav_home);
+    }
+
+    private void writeUserInfo(String uid, String name, String surname) {
+        User user = new User(name, surname);
+        firebaseFirestore.collection("users").document(uid).set(user);
+
     }
 
     private boolean areInputsValid() {
