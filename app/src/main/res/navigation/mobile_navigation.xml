@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_nav_home_to_utilityFragment"
             app:destination="@id/utilityFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_loginFragment"
+            app:destination="@id/navigation2" />
     </fragment>
 
     <fragment
@@ -31,4 +34,32 @@
         android:name="it.units.sim.savewater.ui.UtilityFragment"
         android:label="fragment_item_list"
         tools:layout="@layout/fragment_utility" />
+    <navigation
+        android:id="@+id/navigation2"
+        app:startDestination="@id/loginFragment">
+        <fragment
+            android:id="@+id/loginFragment"
+            android:name="it.units.sim.savewater.ui.auth.LoginFragment"
+            android:label="fragment_login"
+            tools:layout="@layout/fragment_login">
+            <action
+                android:id="@+id/action_loginFragment_to_registrationFragment"
+                app:destination="@id/registrationFragment" />
+            <action
+                android:id="@+id/action_loginFragment_to_nav_home"
+                app:destination="@id/nav_home" />
+        </fragment>
+        <fragment
+            android:id="@+id/registrationFragment"
+            android:name="it.units.sim.savewater.ui.auth.RegistrationFragment"
+            android:label="fragment_registration"
+            tools:layout="@layout/fragment_registration">
+            <action
+                android:id="@+id/action_registrationFragment_to_loginFragment"
+                app:destination="@id/loginFragment" />
+            <action
+                android:id="@+id/action_registrationFragment_to_nav_home"
+                app:destination="@id/nav_home" />
+        </fragment>
+    </navigation>
 </navigation>

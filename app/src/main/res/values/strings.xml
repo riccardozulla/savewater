@@ -22,4 +22,9 @@
     <string name="action_sign_in">Sign in</string>
     <string name="registration_hint">Create an account</string>
     <string name="logo_image_content_description">Save water logo</string>
+    <string name="prompt_name">Name</string>
+    <string name="prompt_surname">Surname</string>
+    <string name="prompt_confirm_password">Confirm password</string>
+    <string name="action_sign_up">Sign up</string>
+    <string name="login_hint">Already have an account? Login here</string>
 </resources>
