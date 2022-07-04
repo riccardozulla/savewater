@@ -30,5 +30,18 @@
         android:id="@+id/utilityFragment"
         android:name="it.units.sim.savewater.ui.UtilityFragment"
         android:label="fragment_item_list"
-        tools:layout="@layout/fragment_utility" />
+        tools:layout="@layout/fragment_utility">
+        <action
+            android:id="@+id/action_utilityFragment_to_customUtilityFragment"
+            app:destination="@id/customUtilityFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/customUtilityFragment"
+        android:name="it.units.sim.savewater.ui.CustomUtilityFragment"
+        android:label="fragment_custom_utility"
+        tools:layout="@layout/fragment_custom_utility">
+        <action
+            android:id="@+id/action_customUtilityFragment_to_utilityFragment"
+            app:destination="@id/utilityFragment" />
+    </fragment>
 </navigation>

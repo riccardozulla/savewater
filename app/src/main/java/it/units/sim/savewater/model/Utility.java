@@ -1,14 +1,19 @@
 package it.units.sim.savewater.model;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.ServerTimestamp;
+
 public class Utility {
     private String name;
     private String description;
-    private float waterConsumption;
+    private int waterConsumption;
+    @ServerTimestamp
+    private Timestamp timestamp;
 
     public Utility() {
     }
 
-    public Utility(String name, String description, float waterConsumption) {
+    public Utility(String name, String description, int waterConsumption) {
         this.name = name;
         this.description = description;
         this.waterConsumption = waterConsumption;
@@ -22,11 +27,11 @@ public class Utility {
         this.name = name;
     }
 
-    public float getWaterConsumption() {
+    public int getWaterConsumption() {
         return waterConsumption;
     }
 
-    public void setWaterConsumption(float waterConsumption) {
+    public void setWaterConsumption(int waterConsumption) {
         this.waterConsumption = waterConsumption;
     }
 
@@ -36,5 +41,13 @@ public class Utility {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 }

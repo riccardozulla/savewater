@@ -10,6 +10,7 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,11 +20,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
+import it.units.sim.savewater.R;
 import it.units.sim.savewater.databinding.FragmentUtilityBinding;
+import it.units.sim.savewater.model.Utility;
 
 public class UtilityFragment extends Fragment implements UtilityAdapter.OnUtilitySelectedListener {
 
     private static final String TAG = "UtilityFragment";
+    private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private UtilityAdapter mAdapter;
     private FragmentUtilityBinding binding;
 
@@ -39,7 +43,7 @@ public class UtilityFragment extends Fragment implements UtilityAdapter.OnUtilit
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Query query = FirebaseFirestore.getInstance().collection("utilities");
+        Query query = firebaseFirestore.collection("utilities");
 
         // RecyclerView
         mAdapter = new UtilityAdapter(query, this) {
@@ -68,7 +72,7 @@ public class UtilityFragment extends Fragment implements UtilityAdapter.OnUtilit
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Query q = FirebaseFirestore.getInstance().collection("utilities").whereGreaterThanOrEqualTo("name", newText).whereLessThanOrEqualTo("name", newText + '~');
+                Query q = firebaseFirestore.collection("utilities").whereGreaterThanOrEqualTo("name", newText).whereLessThanOrEqualTo("name", newText + '~');
                 mAdapter.setQuery(q);
                 return true;
             }
@@ -79,8 +83,6 @@ public class UtilityFragment extends Fragment implements UtilityAdapter.OnUtilit
     @Override
     public void onStart() {
         super.onStart();
-
-        //TODO: check if user is authenticated
 
         // Start listening for Firestore updates
         if (mAdapter != null) {
@@ -97,8 +99,15 @@ public class UtilityFragment extends Fragment implements UtilityAdapter.OnUtilit
     }
 
     @Override
-    public void onUtilitySelected(DocumentSnapshot utility) {
-        Log.w(TAG, "utility selected");
-        //TODO: do something
+    public void onUtilitySelected(DocumentSnapshot snapshot) {
+        Log.d(TAG, "utility selected");
+        Utility utility = snapshot.toObject(Utility.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(CustomUtilityFragment.ARG_TITLE, utility.getName());
+        bundle.putInt(CustomUtilityFragment.ARG_WATER_CONSUMPTION, utility.getWaterConsumption());
+        bundle.putString(CustomUtilityFragment.ARG_DESCRIPTION, utility.getDescription());
+
+        Navigation.findNavController(requireView()).navigate(R.id.action_utilityFragment_to_customUtilityFragment, bundle);
     }
 }

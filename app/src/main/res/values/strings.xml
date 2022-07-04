@@ -28,4 +28,12 @@
     <string name="action_sign_up">Sign up</string>
     <string name="login_hint">Already have an account? Login here</string>
     <string name="action_sign_out">Sign out</string>
+
+    <string name="utility_title_hint">Title</string>
+    <string name="utility_description_hint">Description</string>
+    <string name="action_back">Back</string>
+    <string name="action_add">Add</string>
+    <string name="utility_title">Title</string>
+    <string name="utility_water_consumption">Water consumption</string>
+    <string name="utility_description">Description</string>
 </resources>
