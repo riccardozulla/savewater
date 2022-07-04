@@ -104,10 +104,10 @@ public class UtilityFragment extends Fragment implements UtilityAdapter.OnUtilit
         Utility utility = snapshot.toObject(Utility.class);
 
         Bundle bundle = new Bundle();
-        bundle.putString(CustomUtilityFragment.ARG_TITLE, utility.getName());
-        bundle.putInt(CustomUtilityFragment.ARG_WATER_CONSUMPTION, utility.getWaterConsumption());
-        bundle.putString(CustomUtilityFragment.ARG_DESCRIPTION, utility.getDescription());
+        bundle.putString(UtilityDetailFragment.ARG_TITLE, utility.getName());
+        bundle.putInt(UtilityDetailFragment.ARG_WATER_CONSUMPTION, utility.getWaterConsumption());
+        bundle.putString(UtilityDetailFragment.ARG_DESCRIPTION, utility.getDescription());
 
-        Navigation.findNavController(requireView()).navigate(R.id.action_utilityFragment_to_customUtilityFragment, bundle);
+        Navigation.findNavController(requireView()).navigate(R.id.action_utilityFragment_to_utilityDetailFragment, bundle);
     }
 }

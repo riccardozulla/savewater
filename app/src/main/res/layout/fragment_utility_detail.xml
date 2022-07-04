@@ -4,19 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.CustomUtilityFragment">
+    tools:context=".ui.UtilityDetailFragment">
 
     <TextView
-        android:id="@+id/text_view_custom_utility_title"
+        android:id="@+id/text_view_utility_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:text="@string/utility_title"
-        app:layout_constraintBottom_toTopOf="@+id/edit_text_custom_utility_title"
+        app:layout_constraintBottom_toTopOf="@+id/edit_text_utility_title"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/edit_text_custom_utility_title"
+        android:id="@+id/edit_text_utility_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
@@ -44,22 +44,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-        app:layout_constraintBottom_toTopOf="@id/edit_text_custom_utility_description"
+        app:layout_constraintBottom_toTopOf="@id/edit_text_utility_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_custom_utility_title" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_utility_title" />
 
     <TextView
-        android:id="@+id/text_view_custom_utility_description"
+        android:id="@+id/text_view_utility_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:text="@string/utility_description"
-        app:layout_constraintBottom_toTopOf="@+id/edit_text_custom_utility_description"
+        app:layout_constraintBottom_toTopOf="@+id/edit_text_utility_description"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/edit_text_custom_utility_description"
+        android:id="@+id/edit_text_utility_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
@@ -80,17 +80,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_custom_utility_description">
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_utility_description">
 
         <Button
-            android:id="@+id/button_custom_utility_back"
+            android:id="@+id/button_utility_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/text_margin"
             android:text="@string/action_back" />
 
         <Button
-            android:id="@+id/button_custom_utility_add"
+            android:id="@+id/button_utility_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/text_margin"

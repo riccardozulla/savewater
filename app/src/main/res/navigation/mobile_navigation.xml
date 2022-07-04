@@ -32,16 +32,16 @@
         android:label="fragment_item_list"
         tools:layout="@layout/fragment_utility">
         <action
-            android:id="@+id/action_utilityFragment_to_customUtilityFragment"
-            app:destination="@id/customUtilityFragment" />
+            android:id="@+id/action_utilityFragment_to_utilityDetailFragment"
+            app:destination="@id/utilityDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/customUtilityFragment"
-        android:name="it.units.sim.savewater.ui.CustomUtilityFragment"
-        android:label="fragment_custom_utility"
-        tools:layout="@layout/fragment_custom_utility">
+        android:id="@+id/utilityDetailFragment"
+        android:name="it.units.sim.savewater.ui.UtilityDetailFragment"
+        android:label="fragment_utility_detail"
+        tools:layout="@layout/fragment_utility_detail">
         <action
-            android:id="@+id/action_customUtilityFragment_to_utilityFragment"
+            android:id="@+id/action_utilityDetailFragment_to_utilityFragment"
             app:destination="@id/utilityFragment" />
     </fragment>
 </navigation>
