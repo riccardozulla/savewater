@@ -6,6 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".ui.diary.DiaryFragment">
 
+    <TextView
+        android:id="@+id/edit_text_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_margin"
+        android:background="@drawable/border"
+        android:padding="@dimen/text_padding"
+        android:textAlignment="center"
+        android:textSize="@dimen/date_picker_text_size"
+        android:textStyle="bold"
+        app:drawableStartCompat="@drawable/ic_baseline_calendar_today_24"
+        app:layout_constraintBottom_toTopOf="@id/utility_diary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/utility_diary"
         android:layout_width="match_parent"
@@ -14,7 +30,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_date"
         tools:context=".ui.diary.DiaryFragment"
         tools:listitem="@layout/item_utility" />
 

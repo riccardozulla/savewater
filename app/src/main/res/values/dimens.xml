@@ -12,4 +12,6 @@
     <dimen name="item_button_margin">6dp</dimen>
     <dimen name="login_side_margin">24dp</dimen>
     <dimen name="login_text_spacing">8dp</dimen>
+    <dimen name="text_padding">16dp</dimen>
+    <dimen name="date_picker_text_size">20sp</dimen>
 </resources>
