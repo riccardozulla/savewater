@@ -5,6 +5,10 @@ public class User {
     private String surname;
     private int target = 150;
 
+    public User() {
+
+    }
+
     public User(String name, String surname) {
         this.name = name;
         this.surname = surname;

@@ -6,34 +6,20 @@
     android:layout_height="@dimen/dashboard_height"
     tools:context=".ui.home.DashboardFragment">
 
-    <TextView
-        android:id="@+id/label_today"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/today_label"
-        app:layout_constraintBottom_toTopOf="@+id/label_water_used"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/label_water_used"
+    <com.github.anastr.speedviewlib.TubeSpeedometer
+        android:id="@+id/speedometer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/prompt_water_used"
-        app:layout_constraintBottom_toTopOf="@+id/wated_used_description"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/label_today" />
-
-    <TextView
-        android:id="@+id/wated_used_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/water_used_description"
+        android:layout_margin="@dimen/speedometer_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/label_water_used" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:sv_tickPadding="60dp"
+        app:sv_tickRotation="false"
+        app:sv_unit="liters"
+        app:sv_unitUnderSpeedText="true"
+        app:sv_withTremble="false" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
