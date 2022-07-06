@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/item_margin"
-    android:background="@color/design_default_color_secondary_variant"> <!--    TODO: change color-->
+    android:layout_margin="@dimen/item_margin">
 
     <TextView
         android:id="@+id/item_name"
@@ -34,7 +33,8 @@
         android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem"
         app:layout_constraintBottom_toBottomOf="@id/item_name"
-        app:layout_constraintEnd_toStartOf="@id/item_water_consumption_label"
+        app:layout_constraintEnd_toEndOf="@id/item_water_consumption_label"
+        app:layout_constraintStart_toStartOf="@+id/item_water_consumption_label"
         app:layout_constraintTop_toTopOf="@id/item_name" />
 
     <TextView
@@ -44,24 +44,9 @@
         android:layout_margin="@dimen/text_margin"
         android:text="@string/water_consumption_label"
         android:textAppearance="?attr/textAppearanceListItem"
-        app:layout_constraintBottom_toBottomOf="@id/item_name"
+        app:layout_constraintBottom_toBottomOf="@id/item_description"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/item_name" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/item_button_margin"
-        android:backgroundTint="@color/design_default_color_primary"
-        android:clickable="true"
-        app:fabSize="mini"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_add_24"
-        android:contentDescription="@string/fab_content_description" /> <!--    TODO: change color-->
+        app:layout_constraintTop_toTopOf="@id/item_description" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
