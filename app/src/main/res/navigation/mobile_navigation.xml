@@ -42,6 +42,8 @@
         tools:layout="@layout/fragment_utility_detail">
         <action
             android:id="@+id/action_utilityDetailFragment_to_utilityFragment"
-            app:destination="@id/utilityFragment" />
+            app:destination="@id/utilityFragment"
+            app:popUpTo="@id/utilityFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
