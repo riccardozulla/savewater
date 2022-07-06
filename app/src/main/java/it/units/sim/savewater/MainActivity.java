@@ -2,11 +2,10 @@ package it.units.sim.savewater;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -16,9 +15,14 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import it.units.sim.savewater.databinding.ActivityMainBinding;
+import it.units.sim.savewater.model.User;
 import it.units.sim.savewater.ui.auth.AuthActivity;
+import it.units.sim.savewater.utils.FirebaseUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        FirebaseUtils.init();
+
         setSupportActionBar(binding.appBarMain.toolbar);
 
         DrawerLayout drawer = binding.drawerLayout;
@@ -48,6 +54,22 @@ public class MainActivity extends AppCompatActivity {
         mNavController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, mNavController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, mNavController);
+
+
+        View headerView = binding.navView.getHeaderView(0);
+        TextView headerName = headerView.findViewById(R.id.text_view_nav_header_name);
+        TextView headerEmail = headerView.findViewById(R.id.text_view_nav_header_email);
+
+        if (FirebaseUtils.userRef != null) {
+            FirebaseUtils.userRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                    User user = value.toObject(User.class);
+                    headerName.setText(user.getName());
+                    headerEmail.setText(user.getEmail());
+                }
+            });
+        }
     }
 
     @Override
@@ -62,15 +84,6 @@ public class MainActivity extends AppCompatActivity {
         return firebaseAuth.getCurrentUser() != null;
     }
 
-    private void refreshActivity() {
-        Intent refresh = getIntent();
-        finish();
-        startActivity(refresh);
-    }
-
-    private void signOut() {
-        firebaseAuth.signOut();
-    }
 
     @Override
     public boolean onSupportNavigateUp() {

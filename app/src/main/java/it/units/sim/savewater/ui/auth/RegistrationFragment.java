@@ -83,12 +83,12 @@ public class RegistrationFragment extends Fragment {
     private void onAuthSuccess(FirebaseUser firebaseUser) {
         String name = binding.editTextName.getText().toString();
         String surname = binding.editTextSurname.getText().toString();
-        writeUserInfo(firebaseUser.getUid(), name, surname);
+        writeUserInfo(firebaseUser.getUid(), firebaseUser.getEmail(), name, surname);
         startActivity(new Intent(requireActivity(), MainActivity.class));
     }
 
-    private void writeUserInfo(String uid, String name, String surname) {
-        User user = new User(name, surname);
+    private void writeUserInfo(String uid, String email, String name, String surname) {
+        User user = new User(email, name, surname);
         firebaseFirestore.collection("users").document(uid).set(user);
 
     }

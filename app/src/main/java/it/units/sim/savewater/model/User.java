@@ -1,6 +1,7 @@
 package it.units.sim.savewater.model;
 
 public class User {
+    private String email;
     private String name;
     private String surname;
     private int target = 150;
@@ -9,7 +10,8 @@ public class User {
 
     }
 
-    public User(String name, String surname) {
+    public User(String email, String name, String surname) {
+        this.email = email;
         this.name = name;
         this.surname = surname;
     }
@@ -36,5 +38,13 @@ public class User {
 
     public void setTarget(int target) {
         this.target = target;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
