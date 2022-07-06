@@ -62,23 +62,6 @@ public class MainActivity extends AppCompatActivity {
         return firebaseAuth.getCurrentUser() != null;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        //TODO: add action to menu items
-        if (item.getItemId() == R.id.action_sign_out) {
-            signOut();
-            refreshActivity();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private void refreshActivity() {
         Intent refresh = getIntent();
         finish();
