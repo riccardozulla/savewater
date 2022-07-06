@@ -1,24 +1,20 @@
 <resources>
     <string name="app_name">SaveWater</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
+    <!-- menu -->
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_diary">Diary</string>
+    <string name="menu_settings">Settings</string>
 
+    <!-- home -->
     <string name="today_label">Today</string>
-    <string name="prompt_water_used">0</string>
-    <string name="water_used_description">water used in liters</string>
     <string name="fab_content_description">Add button</string>
     <string name="water_consumption_label">liters</string>
-    <string name="menu_diary">Diary</string>
+
+    <!-- authentication -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
+    <string name="change_password">Change password</string>
     <string name="action_sign_in">Sign in</string>
     <string name="registration_hint">Create an account</string>
     <string name="logo_image_content_description">Save water logo</string>
@@ -29,11 +25,36 @@
     <string name="login_hint">Already have an account? Login here</string>
     <string name="action_sign_out">Sign out</string>
 
+    <!-- utility -->
+    <string name="utility_title">Title</string>
+    <string name="utility_description">Description</string>
+    <string name="utility_water_consumption">Water consumption</string>
     <string name="utility_title_hint">Title</string>
     <string name="utility_description_hint">Description</string>
     <string name="action_back">Back</string>
     <string name="action_add">Add</string>
-    <string name="utility_title">Title</string>
-    <string name="utility_water_consumption">Water consumption</string>
-    <string name="utility_description">Description</string>
+
+    <!-- Sync Preferences -->
+    <string name="profile">Profile</string>
+    <string name="edit_account">Edit account</string>
+    <string name="appearance">Appearance</string>
+    <string name="dark_theme">Dark theme</string>
+    <string name="about">About</string>
+    <string name="app_version">Version</string>
+    <string name="version">1.0</string>
+    <string name="about_us">About us</string>
+    <string name="sign_out">Sign out</string>
+    <string name="delete_account">Delete account</string>
+    <string name="edit_name">Edit name</string>
+    <string name="edit_surname">Edit surname</string>
+    <string name="edit_email">Edit email</string>
+    <string name="edit_password">Edit password</string>
+    <string name="edit_target_water_consumption">Challenge yourself! Choose your target</string>
+    <string name="prompt_water_target">Your target</string>
+
+    <!-- delete dialog -->
+    <string name="confirm_delete">Are you sure you want to delete this account?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="delete">Delete</string>
 </resources>

@@ -22,11 +22,6 @@
         tools:layout="@layout/fragment_diary" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="it.units.sim.savewater.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
-    <fragment
         android:id="@+id/utilityFragment"
         android:name="it.units.sim.savewater.ui.UtilityFragment"
         android:label="fragment_item_list"
@@ -46,4 +41,16 @@
             app:popUpTo="@id/utilityFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="it.units.sim.savewater.ui.SettingsFragment"
+        android:label="SettingsFragment">
+        <action
+            android:id="@+id/action_nav_settings_to_nav_edit_account"
+            app:destination="@id/nav_edit_account" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_edit_account"
+        android:name="it.units.sim.savewater.ui.EditAccountFragment"
+        android:label="EditAccountFragment" />
 </navigation>
