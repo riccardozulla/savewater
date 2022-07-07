@@ -20,13 +20,14 @@ public class DashboardFragment extends Fragment {
 
     private static final String TAG = "DashboardFragment";
     private FragmentDashboardBinding binding;
+    private DashboardViewModel dashboardViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
 
-        DashboardViewModel dashboardViewModel =
+        dashboardViewModel =
                 new ViewModelProvider(this).get(DashboardViewModel.class);
 
         dashboardViewModel.getInstantWaterConsumption()
@@ -42,7 +43,7 @@ public class DashboardFragment extends Fragment {
         binding.speedometer.setTicks(Arrays.asList(0f, .2f, .5f, .8f, 1f));
         binding.speedometer.setOnPrintTickLabel((section, number) -> {
             if (section == 3) {
-                return "TARGET";
+                return "MAX";
             } else {
                 return null;
             }
@@ -50,7 +51,6 @@ public class DashboardFragment extends Fragment {
 
         return binding.getRoot();
     }
-
 
     private void updateTargetWaterConsumption(Integer liters) {
         binding.speedometer.setMaxSpeed(liters * 1.25f);

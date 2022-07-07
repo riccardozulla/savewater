@@ -9,20 +9,15 @@ import androidx.lifecycle.ViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.Calendar;
 import java.util.Date;
 
 import it.units.sim.savewater.model.User;
 import it.units.sim.savewater.model.Utility;
+import it.units.sim.savewater.utils.FirebaseUtils;
 
 public class DashboardViewModel extends ViewModel {
 
@@ -30,19 +25,9 @@ public class DashboardViewModel extends ViewModel {
     private final MutableLiveData<Date> date;
     private final MutableLiveData<Integer> targetWaterConsumption;
     private final MutableLiveData<Integer> instantWaterConsumption;
-    private final DocumentReference target = FirebaseFirestore.getInstance().collection("users")
-            .document(FirebaseAuth.getInstance().getCurrentUser().getUid());
-    @ServerTimestamp
-    private final Timestamp timestamp;
-    private Query utilities;
 
     public DashboardViewModel() {
-        Log.d(TAG, "Constructor");
-        date = new MutableLiveData<>();
-        timestamp = Timestamp.now();
-        date.setValue(timestamp.toDate());
-        utilities = generateUtilitiesQuery();
-
+        date = new MutableLiveData<>(Timestamp.now().toDate());
         targetWaterConsumption = new MutableLiveData<>();
         instantWaterConsumption = new MutableLiveData<>();
 
@@ -55,12 +40,11 @@ public class DashboardViewModel extends ViewModel {
     public void setDate(Date date) {
         Log.d(TAG, "setDate");
         this.date.setValue(date);
-        utilities = generateUtilitiesQuery();
-        loadInstantWater();
     }
 
     public MutableLiveData<Integer> getTargetWaterConsumption() {
-        loadTargetWater();
+        retrieveTargetWaterConsumption();
+        Log.d(TAG, "get " + targetWaterConsumption.getValue());
         return targetWaterConsumption;
     }
 
@@ -69,7 +53,7 @@ public class DashboardViewModel extends ViewModel {
     }
 
     public MutableLiveData<Integer> getInstantWaterConsumption() {
-        loadInstantWater();
+        retrieveInstantWaterConsumption();
         return instantWaterConsumption;
     }
 
@@ -77,50 +61,49 @@ public class DashboardViewModel extends ViewModel {
         this.instantWaterConsumption.setValue(instantWaterConsumption);
     }
 
-    private void loadTargetWater() {
-        target.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+    private void retrieveTargetWaterConsumption() {
+        if (!FirebaseUtils.isAuthenticated()) {
+            return;
+        }
+        FirebaseUtils.userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     User user = task.getResult().toObject(User.class);
                     targetWaterConsumption.setValue(user.getTarget());
                 } else {
-                    Log.w(TAG, "loadTargetWater failed");
+                    Log.w(TAG, "retrieveTargetWaterConsumption failed");
                 }
             }
         });
     }
 
-    private void loadInstantWater() {
-        Log.d(TAG, "loadInstantWater");
-        utilities.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    int result = 0;
-
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Utility utility = document.toObject(Utility.class);
-                        result += utility.getWaterConsumption();
-                    }
-                    instantWaterConsumption.setValue(result);
-                } else {
-                    Log.w(TAG, "loadInstantWater failed");
-                }
-            }
-        });
-    }
-
-    private Query generateUtilitiesQuery() {
+    private void retrieveInstantWaterConsumption() {
+        if(!FirebaseUtils.isAuthenticated()) {
+            return;
+        }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateWithoutTime(date.getValue()));
         Timestamp startTime = new Timestamp(calendar.getTime());
         calendar.add(Calendar.DATE, 1);
         Timestamp endTime = new Timestamp(calendar.getTime());
-        return utilities = FirebaseFirestore.getInstance().collection("users")
-                .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .collection("diary")
-                .orderBy("timestamp").startAt(startTime).endAt(endTime);
+
+        FirebaseUtils.utilitiesRef.orderBy("timestamp").startAt(startTime).endAt(endTime)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            int result = 0;
+                            for (DocumentSnapshot document : task.getResult().getDocuments()) {
+                                Utility utility = document.toObject(Utility.class);
+                                result += utility.getWaterConsumption();
+                            }
+                            instantWaterConsumption.setValue(result);
+                        } else {
+                            Log.w(TAG, "retrieveInstantWaterConsumption failed");
+                        }
+                    }
+                });
     }
 
     private Date dateWithoutTime(Date date) {
