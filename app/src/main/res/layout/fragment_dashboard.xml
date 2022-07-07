@@ -18,6 +18,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:sv_tickRotation="false"
         app:sv_unit="liters"
+        app:sv_textColor="@android:color/primary_text_dark"
+        app:sv_unitTextColor="@android:color/primary_text_dark"
+        app:sv_speedTextColor="@android:color/primary_text_dark"
         app:sv_unitUnderSpeedText="true"
         app:sv_withTremble="false" />
 
