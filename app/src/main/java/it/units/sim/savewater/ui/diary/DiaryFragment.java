@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +30,7 @@ import java.util.Date;
 
 import it.units.sim.savewater.databinding.FragmentDiaryBinding;
 import it.units.sim.savewater.ui.UtilityAdapter;
+import it.units.sim.savewater.ui.home.DashboardViewModel;
 
 public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilitySelectedListener {
 
@@ -41,12 +43,15 @@ public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilityS
     private FragmentDiaryBinding binding;
     @ServerTimestamp
     private Timestamp timestamp;
+    private DashboardViewModel dashboardViewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         binding = FragmentDiaryBinding.inflate(inflater, container, false);
+
+        dashboardViewModel = new ViewModelProvider(requireActivity()).get(DashboardViewModel.class);
+
         return binding.getRoot();
     }
 
@@ -57,7 +62,6 @@ public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilityS
         if (datePicker == null)
             datePicker = createDatePicker();
         timestamp = Timestamp.now();
-
         binding.editTextDate.setText(formatter.format(timestamp.toDate()));
         binding.editTextDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +149,7 @@ public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilityS
                 date.setTime((Long) selection);
                 mAdapter.setQuery(generateQuery(date));
                 binding.editTextDate.setText(formatter.format(date));
+                dashboardViewModel.setDate(date);
             }
         });
         return datePicker;

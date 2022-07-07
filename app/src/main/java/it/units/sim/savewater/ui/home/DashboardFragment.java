@@ -28,7 +28,7 @@ public class DashboardFragment extends Fragment {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
 
         dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
+                new ViewModelProvider(requireActivity()).get(DashboardViewModel.class);
 
         dashboardViewModel.getInstantWaterConsumption()
                 .observe(getViewLifecycleOwner(), this::updateWaterConsumption);

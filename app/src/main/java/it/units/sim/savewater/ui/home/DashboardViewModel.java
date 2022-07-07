@@ -38,8 +38,8 @@ public class DashboardViewModel extends ViewModel {
     }
 
     public void setDate(Date date) {
-        Log.d(TAG, "setDate");
         this.date.setValue(date);
+        retrieveInstantWaterConsumption();
     }
 
     public MutableLiveData<Integer> getTargetWaterConsumption() {
@@ -79,7 +79,7 @@ public class DashboardViewModel extends ViewModel {
     }
 
     private void retrieveInstantWaterConsumption() {
-        if(!FirebaseUtils.isAuthenticated()) {
+        if (!FirebaseUtils.isAuthenticated()) {
             return;
         }
         Calendar calendar = Calendar.getInstance();

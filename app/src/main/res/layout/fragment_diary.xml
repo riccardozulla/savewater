@@ -17,10 +17,20 @@
         android:textSize="@dimen/date_picker_text_size"
         android:textStyle="bold"
         app:drawableStartCompat="@drawable/ic_baseline_calendar_today_24"
-        app:layout_constraintBottom_toTopOf="@id/utility_diary"
+        app:layout_constraintBottom_toTopOf="@id/fragment_container_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_view"
+        android:name="it.units.sim.savewater.ui.home.DashboardFragment"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dashboard_height"
+        app:layout_constraintBottom_toTopOf="@id/utility_diary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_date" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/utility_diary"
@@ -30,7 +40,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_date"
+        app:layout_constraintTop_toBottomOf="@id/fragment_container_view"
         tools:context=".ui.diary.DiaryFragment"
         tools:listitem="@layout/item_utility" />
 

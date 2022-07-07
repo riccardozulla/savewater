@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dashboard_height"
+    android:layout_height="match_parent"
     tools:context=".ui.home.DashboardFragment">
 
 
@@ -16,7 +16,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:sv_tickPadding="60dp"
         app:sv_tickRotation="false"
         app:sv_unit="liters"
         app:sv_unitUnderSpeedText="true"
