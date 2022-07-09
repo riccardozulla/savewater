@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/edit_text_date"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:background="@drawable/border"
@@ -17,31 +17,43 @@
         android:textSize="@dimen/date_picker_text_size"
         android:textStyle="bold"
         app:drawableStartCompat="@drawable/ic_baseline_calendar_today_24"
-        app:layout_constraintBottom_toTopOf="@id/fragment_container_view"
+        app:layout_constraintBottom_toTopOf="@id/scroll_view_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_container_view"
-        android:name="it.units.sim.savewater.ui.home.DashboardFragment"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dashboard_height"
-        app:layout_constraintBottom_toTopOf="@id/utility_diary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_date" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/utility_diary"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layoutManager="LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_container_view"
-        tools:context=".ui.diary.DiaryFragment"
-        tools:listitem="@layout/item_utility" />
+        app:layout_constraintTop_toBottomOf="@id/edit_text_date">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="vertical">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragment_container_view"
+                android:name="it.units.sim.savewater.ui.home.DashboardFragment"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dashboard_height"
+                android:layout_margin="@dimen/text_margin"
+                android:background="@drawable/dashboard_background" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/utility_diary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="LinearLayoutManager"
+                tools:context=".ui.diary.DiaryFragment"
+                tools:listitem="@layout/item_utility" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
