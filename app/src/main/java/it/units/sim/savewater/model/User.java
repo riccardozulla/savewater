@@ -1,10 +1,11 @@
 package it.units.sim.savewater.model;
 
 public class User {
+    public static final int DEFAULT_WATER_TARGET = 150;
     private String email;
     private String name;
     private String surname;
-    private int target = 150;
+    private int target = DEFAULT_WATER_TARGET;
 
     public User() {
 
