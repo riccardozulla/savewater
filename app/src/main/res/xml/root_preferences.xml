@@ -35,7 +35,7 @@
             app:useSimpleSummaryProvider="true">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="https://github.com/riccardozulla" />
+                android:data="https://github.com/riccardozulla/savewater" />
         </Preference>
 
     </PreferenceCategory>
