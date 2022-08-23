@@ -36,7 +36,6 @@ public class UtilityDetailFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         binding = FragmentUtilityDetailBinding.inflate(inflater, container, false);
 
         return binding.getRoot();
