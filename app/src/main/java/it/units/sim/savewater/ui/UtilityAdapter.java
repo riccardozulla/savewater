@@ -1,6 +1,5 @@
 package it.units.sim.savewater.ui;
 
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +25,8 @@ public class UtilityAdapter extends FirestoreAdapter<UtilityAdapter.ViewHolder> 
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(ItemUtilityBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
-
     }
 
     @Override
@@ -63,19 +60,15 @@ public class UtilityAdapter extends FirestoreAdapter<UtilityAdapter.ViewHolder> 
                          final OnUtilitySelectedListener listener) {
 
             Utility utility = snapshot.toObject(Utility.class);
-            Resources resources = itemView.getResources();
             binding.itemName.setText(utility.getName());
             binding.itemWaterConsumption.setText(String.valueOf(utility.getWaterConsumption()));
             binding.itemDescription.setText(utility.getDescription());
 
 
             // Click listener
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (listener != null) {
-                        listener.onUtilitySelected(snapshot);
-                    }
+            itemView.setOnClickListener(view -> {
+                if (listener != null) {
+                    listener.onUtilitySelected(snapshot);
                 }
             });
         }
