@@ -34,7 +34,6 @@ public class UtilityFragment extends Fragment implements UtilityAdapter.OnUtilit
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         binding = FragmentUtilityBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -49,12 +48,11 @@ public class UtilityFragment extends Fragment implements UtilityAdapter.OnUtilit
         mAdapter = new UtilityAdapter(query, this) {
             @Override
             protected void onDataChanged() {
-                //TODO: do something when data retrieved
+                Log.d(TAG, "onDataChanged");
             }
 
             @Override
             protected void onError(FirebaseFirestoreException e) {
-                // Show a snackbar on errors
                 Snackbar.make(binding.getRoot(),
                         "Error: check logs for info.", Snackbar.LENGTH_LONG).show();
             }
@@ -72,7 +70,11 @@ public class UtilityFragment extends Fragment implements UtilityAdapter.OnUtilit
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Query q = firebaseFirestore.collection("utilities").whereGreaterThanOrEqualTo("name", newText).whereLessThanOrEqualTo("name", newText + '~');
+                String capitalizeString = "";
+                if(newText.length()>0){
+                    capitalizeString = newText.toUpperCase().charAt(0)+newText.substring(1).toLowerCase();
+                }
+                Query q = firebaseFirestore.collection("utilities").whereGreaterThanOrEqualTo("name", capitalizeString).whereLessThanOrEqualTo("name", capitalizeString + '~');
                 mAdapter.setQuery(q);
                 return true;
             }
