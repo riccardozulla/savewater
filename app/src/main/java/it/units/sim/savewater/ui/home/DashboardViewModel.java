@@ -2,15 +2,11 @@ package it.units.sim.savewater.ui.home;
 
 import android.util.Log;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -38,24 +34,18 @@ public class DashboardViewModel extends ViewModel {
     }
 
     public void setDate(Date date) {
-        Log.d(TAG, "Setting date");
         this.date = date;
         addDailyWaterConsumptionListener(date);
     }
 
-
     private void addTargetListener() {
-        Log.d(TAG, "addTargetListener");
         if (!FirebaseUtils.isAuthenticated()) {
             Log.d(TAG, "Not authenticated");
             return;
         }
-        FirebaseUtils.userRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                User user = value.toObject(User.class);
-                targetWaterConsumption.setValue(user.getTarget());
-            }
+        FirebaseUtils.userRef.addSnapshotListener((value, error) -> {
+            User user = value.toObject(User.class);
+            targetWaterConsumption.setValue(user.getTarget());
         });
     }
 
@@ -69,13 +59,7 @@ public class DashboardViewModel extends ViewModel {
         calendar.add(Calendar.DATE, 1);
         Timestamp endTime = new Timestamp(calendar.getTime());
 
-        FirebaseUtils.utilitiesRef.orderBy("timestamp").startAt(startTime).endAt(endTime).addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                dailyWaterConsumption.setValue(value.getDocuments());
-            }
-        });
-
+        FirebaseUtils.utilitiesRef.orderBy("timestamp").startAt(startTime).endAt(endTime).addSnapshotListener((value, error) -> dailyWaterConsumption.setValue(value.getDocuments()));
     }
 
     public MutableLiveData<Integer> getTargetWaterConsumption() {
