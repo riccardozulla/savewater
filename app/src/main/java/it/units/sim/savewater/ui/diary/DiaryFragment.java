@@ -61,22 +61,27 @@ public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilityS
 
         if (datePicker == null)
             datePicker = createDatePicker();
-        timestamp = Timestamp.now();
-        binding.editTextDate.setText(formatter.format(timestamp.toDate()));
+
+        Date now = new Date();
+
+        binding.editTextDate.setText(formatter.format(now));
         binding.editTextDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 datePicker.show(getChildFragmentManager(), TAG);
             }
         });
-
-        Query query = generateQuery(dateWithoutTime(timestamp.toDate()));
+        dashboardViewModel.setDate(now);
+        Query query = generateQuery(now);
         // RecyclerView
         mAdapter = new UtilityAdapter(query, this) {
             @Override
             protected void onDataChanged() {
-                //TODO: do something when data retrieved
-                Log.d(TAG, "Something retrieved: " + getItemCount());
+                if (getItemCount() < 1) {
+                    binding.textViewSwipeAdvice.setVisibility(View.GONE);
+                } else {
+                    binding.textViewSwipeAdvice.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
