@@ -20,10 +20,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -74,12 +71,7 @@ public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilityS
         Date now = new Date();
 
         binding.editTextDate.setText(formatter.format(now));
-        binding.editTextDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                datePicker.show(getChildFragmentManager(), TAG);
-            }
-        });
+        binding.editTextDate.setOnClickListener(v -> datePicker.show(getChildFragmentManager(), TAG));
         dashboardViewModel.setDate(now);
         Query query = generateQuery(now);
         // RecyclerView
@@ -117,22 +109,12 @@ public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilityS
                         String id = mAdapter.retrieveSnapshot(viewHolder.getAbsoluteAdapterPosition()).getId();
                         Log.d(TAG, id);
                         FirebaseUtils.utilitiesRef.document(id).delete()
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Snackbar.make(requireView(), "Deleted", Snackbar.LENGTH_LONG).show();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Snackbar.make(requireView(), "Error deleting document", Snackbar.LENGTH_LONG).show();
-                                    }
-                                });
+                                .addOnSuccessListener(aVoid -> Snackbar.make(requireView(), "Deleted", Snackbar.LENGTH_LONG).show())
+                                .addOnFailureListener(e -> Snackbar.make(requireView(), "Error deleting document", Snackbar.LENGTH_LONG).show());
                     }
 
                     @Override
-                    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                    public void onChildDraw(@NonNull Canvas canvas, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                             // Get RecyclerView item from the ViewHolder
                             View itemView = viewHolder.itemView;
@@ -140,10 +122,10 @@ public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilityS
                             Paint p = new Paint();
                             Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.icon_trash_50);
                             p.setColor(Color.RED);
-                            c.drawRect((float) itemView.getRight() + dX, (float) itemView.getTop(),
+                            canvas.drawRect((float) itemView.getRight() + dX, (float) itemView.getTop(),
                                     (float) itemView.getRight(), (float) itemView.getBottom(), p);
 
-                            c.drawBitmap(icon,
+                            canvas.drawBitmap(icon,
                                     (float) itemView.getRight() - convertDpToPx(16) - icon.getWidth(),
                                     (float) itemView.getTop() + ((float) itemView.getBottom() - (float) itemView.getTop() - icon.getHeight()) / 2,
                                     p);
@@ -153,7 +135,7 @@ public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilityS
                             viewHolder.itemView.setTranslationX(dX);
 
                         } else {
-                            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                            super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                         }
                     }
 
@@ -212,15 +194,12 @@ public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilityS
                         .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                         .build();
 
-        datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
-            @Override
-            public void onPositiveButtonClick(Object selection) {
-                Date date = new Date();
-                date.setTime((Long) selection);
-                mAdapter.setQuery(generateQuery(date));
-                binding.editTextDate.setText(formatter.format(date));
-                dashboardViewModel.setDate(date);
-            }
+        datePicker.addOnPositiveButtonClickListener(selection -> {
+            Date date = new Date();
+            date.setTime(selection);
+            mAdapter.setQuery(generateQuery(date));
+            binding.editTextDate.setText(formatter.format(date));
+            dashboardViewModel.setDate(date);
         });
         return datePicker;
     }
