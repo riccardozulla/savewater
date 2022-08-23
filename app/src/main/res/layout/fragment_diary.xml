@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-        android:background="@drawable/border"
+        android:background="@drawable/date_picker_border"
         android:padding="@dimen/text_padding"
         android:textAlignment="center"
         android:textSize="@dimen/date_picker_text_size"
