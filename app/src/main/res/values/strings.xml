@@ -10,6 +10,10 @@
     <string name="today_label">Today</string>
     <string name="fab_content_description">Add button</string>
     <string name="water_consumption_label">liters</string>
+    <string name="share_string">Share</string>
+
+    <!-- diary-->
+    <string name="swipe_advice">Swipe left to delete</string>
 
     <!-- authentication -->
     <string name="prompt_email">Email</string>
