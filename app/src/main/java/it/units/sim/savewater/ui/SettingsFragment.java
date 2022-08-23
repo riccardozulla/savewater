@@ -3,8 +3,6 @@ package it.units.sim.savewater.ui;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.navigation.Navigation;
 import androidx.preference.EditTextPreference;
@@ -13,9 +11,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import it.units.sim.savewater.R;
 import it.units.sim.savewater.model.User;
@@ -23,7 +18,6 @@ import it.units.sim.savewater.ui.auth.AuthActivity;
 import it.units.sim.savewater.utils.FirebaseUtils;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
-
 
     private static final String TAG = "SettingsFragment";
 
@@ -38,16 +32,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
 
         EditTextPreference target = findPreference("edit_target");
-        target.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
-                if (isValidNumber((String) newValue)) {
-                    FirebaseUtils.userRef.update("target", Integer.valueOf((String) newValue));
-                } else {
-                    Snackbar.make(requireView(), "Value must be a number", Snackbar.LENGTH_LONG).show();
-                }
-                return false;
+        target.setOnPreferenceChangeListener((preference, newValue) -> {
+            if (isValidNumber((String) newValue)) {
+                FirebaseUtils.userRef.update("target", Integer.valueOf((String) newValue));
+            } else {
+                Snackbar.make(requireView(), "Value must be a number", Snackbar.LENGTH_LONG).show();
             }
+            return false;
         });
 
         SwitchPreferenceCompat switchDarkTheme = findPreference("enable_dark_theme");
@@ -69,12 +60,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return false;
         });
 
-        FirebaseUtils.userRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                User user = value.toObject(User.class);
-                target.setSummary(user.getTarget() + " liters per day");
-            }
+        FirebaseUtils.userRef.addSnapshotListener((value, error) -> {
+            User user = value.toObject(User.class);
+            target.setSummary(user.getTarget() + " liters per day");
         });
     }
 
