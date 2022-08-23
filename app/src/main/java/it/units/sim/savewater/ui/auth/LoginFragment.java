@@ -9,13 +9,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import it.units.sim.savewater.MainActivity;
@@ -31,18 +27,8 @@ public class LoginFragment extends Fragment {
 
         binding = FragmentLoginBinding.inflate(inflater, container, false);
 
-        binding.buttonLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
-        binding.linkToRegistration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_registrationFragment);
-            }
-        });
+        binding.buttonLogin.setOnClickListener(v -> signIn());
+        binding.linkToRegistration.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_registrationFragment));
 
         return binding.getRoot();
     }
@@ -52,18 +38,15 @@ public class LoginFragment extends Fragment {
         String password = binding.editTextPassword.getText().toString();
         showProgressBar();
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).
-                addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        hideProgressBar();
-                        if (task.isSuccessful()) {
-                            onAuthSuccess();
-                        } else {
-                            Log.w(TAG, "Login failed");
-                            binding.editTextEmail.setError("Wrong email");
-                            binding.editTextPassword.setError("Wrong password");
-                            Snackbar.make(requireView(), "Login failed", Snackbar.LENGTH_LONG).show();
-                        }
+                addOnCompleteListener(task -> {
+                    hideProgressBar();
+                    if (task.isSuccessful()) {
+                        onAuthSuccess();
+                    } else {
+                        Log.w(TAG, "Login failed");
+                        binding.editTextEmail.setError("Wrong email");
+                        binding.editTextPassword.setError("Wrong password");
+                        Snackbar.make(requireView(), "Login failed", Snackbar.LENGTH_LONG).show();
                     }
                 });
     }
