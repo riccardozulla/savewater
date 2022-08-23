@@ -71,8 +71,8 @@ public class UtilityFragment extends Fragment implements UtilityAdapter.OnUtilit
             @Override
             public boolean onQueryTextChange(String newText) {
                 String capitalizeString = "";
-                if(newText.length()>0){
-                    capitalizeString = newText.toUpperCase().charAt(0)+newText.substring(1).toLowerCase();
+                if (newText.length() > 0) {
+                    capitalizeString = newText.toUpperCase().charAt(0) + newText.substring(1).toLowerCase();
                 }
                 Query q = firebaseFirestore.collection("utilities").whereGreaterThanOrEqualTo("name", capitalizeString).whereLessThanOrEqualTo("name", capitalizeString + '~');
                 mAdapter.setQuery(q);
