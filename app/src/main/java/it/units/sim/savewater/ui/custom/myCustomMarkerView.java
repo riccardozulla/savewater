@@ -37,7 +37,7 @@ public class myCustomMarkerView extends MarkerView {
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
         markerTime.setText(mFormat.format(new Date((long) e.getX())));
-        markerIncrement.setText((int) e.getY() + R.string.liters_abbr);
+        markerIncrement.setText(String.format(getResources().getString(R.string.liters_abbr), (int) e.getY()));
 
         super.refreshContent(e, highlight);
     }
