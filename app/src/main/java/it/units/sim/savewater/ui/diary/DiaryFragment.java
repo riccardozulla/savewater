@@ -103,8 +103,6 @@ public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilityS
     public void onStart() {
         super.onStart();
 
-        //TODO: check if user is authenticated
-
         // Start listening for Firestore updates
         if (mAdapter != null) {
             mAdapter.startListening();
@@ -129,6 +127,11 @@ public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilityS
     private Query generateQuery(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
         Timestamp startTime = new Timestamp(calendar.getTime());
         calendar.add(Calendar.DATE, 1);
         Timestamp endTime = new Timestamp(calendar.getTime());
@@ -158,15 +161,5 @@ public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilityS
             }
         });
         return datePicker;
-    }
-
-    private Date dateWithoutTime(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        return calendar.getTime();
     }
 }
