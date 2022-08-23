@@ -28,12 +28,7 @@ public class HomeFragment extends Fragment {
         dashboardViewModel.setDate(new Date());
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_nav_home_to_utilityFragment);
-            }
-        });
+        binding.fab.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_nav_home_to_utilityFragment));
 
         return binding.getRoot();
     }
