@@ -78,15 +78,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (!isUserAuthenticated()) {
+        if (!FirebaseUtils.isAuthenticated()) {
             startActivity(new Intent(this, AuthActivity.class));
         }
     }
-
-    private boolean isUserAuthenticated() {
-        return firebaseAuth.getCurrentUser() != null;
-    }
-
 
     @Override
     public boolean onSupportNavigateUp() {
