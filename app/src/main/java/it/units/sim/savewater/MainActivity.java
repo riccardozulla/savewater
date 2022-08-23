@@ -19,6 +19,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.util.Objects;
+
 import it.units.sim.savewater.databinding.ActivityMainBinding;
 import it.units.sim.savewater.model.User;
 import it.units.sim.savewater.ui.auth.AuthActivity;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
