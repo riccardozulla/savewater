@@ -17,7 +17,6 @@
         android:textSize="@dimen/date_picker_text_size"
         android:textStyle="bold"
         app:drawableStartCompat="@drawable/ic_baseline_calendar_today_24"
-        app:layout_constraintBottom_toTopOf="@id/scroll_view_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,8 +25,9 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_view_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edit_text_date">
@@ -39,20 +39,28 @@
             android:orientation="vertical">
 
             <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/fragment_container_view"
-                android:name="it.units.sim.savewater.ui.home.DashboardFragment"
+                android:id="@+id/fragment_container_diary"
+                android:name="it.units.sim.savewater.ui.dashboard.HalfPieChartFragment"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dashboard_height"
-                android:layout_margin="@dimen/text_margin"
-                android:background="@drawable/dashboard_background" />
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/utility_diary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/recycler_margin"
                 app:layoutManager="LinearLayoutManager"
                 tools:context=".ui.diary.DiaryFragment"
                 tools:listitem="@layout/item_utility" />
+
+            <TextView
+                android:id="@+id/text_view_swipe_advice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/text_margin"
+                android:text="@string/swipe_advice"
+                android:textAlignment="center" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

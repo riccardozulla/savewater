@@ -1,6 +1,12 @@
 package it.units.sim.savewater.ui.diary;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +16,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -22,18 +31,20 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.ServerTimestamp;
 
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import it.units.sim.savewater.R;
 import it.units.sim.savewater.databinding.FragmentDiaryBinding;
 import it.units.sim.savewater.ui.UtilityAdapter;
 import it.units.sim.savewater.ui.home.DashboardViewModel;
+import it.units.sim.savewater.utils.FirebaseUtils;
 
 public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilitySelectedListener {
 
+    public static final float ALPHA_FULL = 1.0f;
     private static final String TAG = "DiaryFragment";
     private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private final FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
@@ -41,8 +52,6 @@ public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilityS
     MaterialDatePicker<Long> datePicker;
     private UtilityAdapter mAdapter;
     private FragmentDiaryBinding binding;
-    @ServerTimestamp
-    private Timestamp timestamp;
     private DashboardViewModel dashboardViewModel;
 
     @Nullable
@@ -96,7 +105,63 @@ public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilityS
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(mAdapter);
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.START) {
+                    @Override
+                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                        return false;
+                    }
 
+                    @Override
+                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                        String id = mAdapter.retrieveSnapshot(viewHolder.getAbsoluteAdapterPosition()).getId();
+                        Log.d(TAG, id);
+                        FirebaseUtils.utilitiesRef.document(id).delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Snackbar.make(requireView(), "Deleted", Snackbar.LENGTH_LONG).show();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Snackbar.make(requireView(), "Error deleting document", Snackbar.LENGTH_LONG).show();
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                            // Get RecyclerView item from the ViewHolder
+                            View itemView = viewHolder.itemView;
+
+                            Paint p = new Paint();
+                            Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.icon_trash_50);
+                            p.setColor(Color.RED);
+                            c.drawRect((float) itemView.getRight() + dX, (float) itemView.getTop(),
+                                    (float) itemView.getRight(), (float) itemView.getBottom(), p);
+
+                            c.drawBitmap(icon,
+                                    (float) itemView.getRight() - convertDpToPx(16) - icon.getWidth(),
+                                    (float) itemView.getTop() + ((float) itemView.getBottom() - (float) itemView.getTop() - icon.getHeight()) / 2,
+                                    p);
+
+                            final float alpha = ALPHA_FULL - Math.abs(dX) / (float) viewHolder.itemView.getWidth();
+                            viewHolder.itemView.setAlpha(alpha);
+                            viewHolder.itemView.setTranslationX(dX);
+
+                        } else {
+                            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                        }
+                    }
+
+                    private int convertDpToPx(int dp) {
+                        return Math.round(dp * (getResources().getDisplayMetrics().xdpi / DisplayMetrics.DENSITY_DEFAULT));
+                    }
+                });
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
@@ -118,10 +183,8 @@ public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilityS
     }
 
     @Override
-    public void onUtilitySelected(DocumentSnapshot utility) {
-        Log.w(TAG, "utility selected");
-        //TODO: do something
-
+    public void onUtilitySelected(DocumentSnapshot snapshot) {
+        Log.d(TAG, "utility selected");
     }
 
     private Query generateQuery(Date date) {
@@ -140,7 +203,6 @@ public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilityS
                 document(firebaseAuth.getCurrentUser().getUid()).
                 collection("diary").orderBy("timestamp").
                 startAt(startTime).endAt(endTime);
-
     }
 
     private MaterialDatePicker<Long> createDatePicker() {
