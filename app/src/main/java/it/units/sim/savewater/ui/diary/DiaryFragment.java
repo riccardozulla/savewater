@@ -36,7 +36,7 @@ import java.util.Date;
 import it.units.sim.savewater.R;
 import it.units.sim.savewater.databinding.FragmentDiaryBinding;
 import it.units.sim.savewater.ui.UtilityAdapter;
-import it.units.sim.savewater.ui.home.DashboardViewModel;
+import it.units.sim.savewater.ui.dashboard.DashboardViewModel;
 import it.units.sim.savewater.utils.FirebaseUtils;
 
 public class DiaryFragment extends Fragment implements UtilityAdapter.OnUtilitySelectedListener {

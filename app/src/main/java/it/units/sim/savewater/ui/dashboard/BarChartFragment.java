@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 
 import it.units.sim.savewater.databinding.FragmentBarChartBinding;
 import it.units.sim.savewater.model.Utility;
-import it.units.sim.savewater.ui.home.DashboardViewModel;
 
 
 public class BarChartFragment extends SharingChartFragment<BarChart> {

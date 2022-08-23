@@ -37,7 +37,6 @@ import it.units.sim.savewater.R;
 import it.units.sim.savewater.databinding.FragmentLineChartBinding;
 import it.units.sim.savewater.model.Utility;
 import it.units.sim.savewater.ui.custom.myCustomMarkerView;
-import it.units.sim.savewater.ui.home.DashboardViewModel;
 
 public class LineChartFragment extends SharingChartFragment<LineChart> implements OnChartValueSelectedListener {
 

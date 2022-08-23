@@ -22,7 +22,6 @@ import java.util.List;
 
 import it.units.sim.savewater.databinding.FragmentPieChartBinding;
 import it.units.sim.savewater.model.Utility;
-import it.units.sim.savewater.ui.home.DashboardViewModel;
 
 public class HalfPieChartFragment extends SharingChartFragment<PieChart> {
 

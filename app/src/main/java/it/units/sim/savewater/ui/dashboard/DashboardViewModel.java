@@ -1,4 +1,4 @@
-package it.units.sim.savewater.ui.home;
+package it.units.sim.savewater.ui.dashboard;
 
 import android.util.Log;
 
