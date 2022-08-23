@@ -2,108 +2,88 @@ package it.units.sim.savewater.ui.home;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import it.units.sim.savewater.model.User;
-import it.units.sim.savewater.model.Utility;
 import it.units.sim.savewater.utils.FirebaseUtils;
 
 public class DashboardViewModel extends ViewModel {
 
     private static final String TAG = "DashboardViewModel";
-    private final MutableLiveData<Date> date;
     private final MutableLiveData<Integer> targetWaterConsumption;
-    private final MutableLiveData<Integer> instantWaterConsumption;
+    private final MutableLiveData<List<DocumentSnapshot>> dailyWaterConsumption;
+    private Date date;
 
     public DashboardViewModel() {
-        date = new MutableLiveData<>(Timestamp.now().toDate());
-        targetWaterConsumption = new MutableLiveData<>();
-        instantWaterConsumption = new MutableLiveData<>();
+        this.targetWaterConsumption = new MutableLiveData<>();
+        this.dailyWaterConsumption = new MutableLiveData<>();
+        addTargetListener();
 
     }
 
-    public MutableLiveData<Date> getDate() {
+    public Date getDate() {
         return date;
     }
 
     public void setDate(Date date) {
-        this.date.setValue(date);
-        retrieveInstantWaterConsumption();
+        Log.d(TAG, "Setting date");
+        this.date = date;
+        addDailyWaterConsumptionListener(date);
     }
 
-    public MutableLiveData<Integer> getTargetWaterConsumption() {
-        retrieveTargetWaterConsumption();
-        Log.d(TAG, "get " + targetWaterConsumption.getValue());
-        return targetWaterConsumption;
-    }
 
-    public void setTargetWaterConsumption(Integer targetWaterConsumption) {
-        this.targetWaterConsumption.setValue(targetWaterConsumption);
-    }
-
-    public MutableLiveData<Integer> getInstantWaterConsumption() {
-        retrieveInstantWaterConsumption();
-        return instantWaterConsumption;
-    }
-
-    public void setInstantWaterConsumption(Integer instantWaterConsumption) {
-        this.instantWaterConsumption.setValue(instantWaterConsumption);
-    }
-
-    private void retrieveTargetWaterConsumption() {
+    private void addTargetListener() {
+        Log.d(TAG, "addTargetListener");
         if (!FirebaseUtils.isAuthenticated()) {
+            Log.d(TAG, "Not authenticated");
             return;
         }
-        FirebaseUtils.userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        FirebaseUtils.userRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    User user = task.getResult().toObject(User.class);
-                    targetWaterConsumption.setValue(user.getTarget());
-                } else {
-                    Log.w(TAG, "retrieveTargetWaterConsumption failed");
-                }
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                User user = value.toObject(User.class);
+                targetWaterConsumption.setValue(user.getTarget());
             }
         });
     }
 
-    private void retrieveInstantWaterConsumption() {
-        if (!FirebaseUtils.isAuthenticated()) {
+    private void addDailyWaterConsumptionListener(Date date) {
+        if (!FirebaseUtils.isAuthenticated())
             return;
-        }
+
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dateWithoutTime(date.getValue()));
+        calendar.setTime(dateWithoutTime(date));
         Timestamp startTime = new Timestamp(calendar.getTime());
         calendar.add(Calendar.DATE, 1);
         Timestamp endTime = new Timestamp(calendar.getTime());
 
-        FirebaseUtils.utilitiesRef.orderBy("timestamp").startAt(startTime).endAt(endTime)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            int result = 0;
-                            for (DocumentSnapshot document : task.getResult().getDocuments()) {
-                                Utility utility = document.toObject(Utility.class);
-                                result += utility.getWaterConsumption();
-                            }
-                            instantWaterConsumption.setValue(result);
-                        } else {
-                            Log.w(TAG, "retrieveInstantWaterConsumption failed");
-                        }
-                    }
-                });
+        FirebaseUtils.utilitiesRef.orderBy("timestamp").startAt(startTime).endAt(endTime).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                dailyWaterConsumption.setValue(value.getDocuments());
+            }
+        });
+
+    }
+
+    public MutableLiveData<Integer> getTargetWaterConsumption() {
+        return targetWaterConsumption;
+    }
+
+    public MutableLiveData<List<DocumentSnapshot>> getDailyWaterConsumption() {
+        return dailyWaterConsumption;
     }
 
     private Date dateWithoutTime(Date date) {
