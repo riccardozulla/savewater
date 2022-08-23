@@ -11,13 +11,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,19 +34,8 @@ public class RegistrationFragment extends Fragment {
 
         binding = FragmentRegistrationBinding.inflate(inflater, container, false);
 
-        binding.linkToLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_registrationFragment_to_loginFragment);
-            }
-        });
-        binding.buttonSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signUp();
-
-            }
-        });
+        binding.linkToLogin.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_registrationFragment_to_loginFragment));
+        binding.buttonSubmit.setOnClickListener(v -> signUp());
 
         return binding.getRoot();
     }
@@ -64,16 +49,13 @@ public class RegistrationFragment extends Fragment {
         showProgressBar();
         firebaseAuth.createUserWithEmailAndPassword(
                         binding.editTextNewEmail.getText().toString(), binding.editTextNewPassword.getText().toString()).
-                addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        hideProgressBar();
-                        if (task.isSuccessful()) {
-                            onAuthSuccess(task.getResult().getUser());
-                        } else {
-                            Log.w(TAG, "User creation failed");
-                            Snackbar.make(requireView(), "Sign up failed", Snackbar.LENGTH_LONG).show();
-                        }
+                addOnCompleteListener(task -> {
+                    hideProgressBar();
+                    if (task.isSuccessful()) {
+                        onAuthSuccess(task.getResult().getUser());
+                    } else {
+                        Log.w(TAG, "User creation failed");
+                        Snackbar.make(requireView(), "Sign up failed", Snackbar.LENGTH_LONG).show();
                     }
                 });
     }
