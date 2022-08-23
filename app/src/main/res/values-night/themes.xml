@@ -5,6 +5,9 @@
         <item name="colorPrimary">@color/secondaryColor</item>
         <item name="colorPrimaryVariant">@color/secondaryDarkColor</item>
         <item name="colorOnPrimary">@color/secondaryTextColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryColor</item>
+        <!-- Dashboard background color. -->
+        <item name="backgroundColor">#80000000</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>
