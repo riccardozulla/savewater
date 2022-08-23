@@ -41,22 +41,16 @@ public abstract class SharingChartFragment<T extends Chart> extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        binding.buttonShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shareChart(chart);
-            }
-        });
+        binding.buttonShare.setOnClickListener(v -> shareChart(chart));
     }
 
     protected abstract View drawChart(@NonNull LayoutInflater inflater, @Nullable Bundle savedInstanceState);
 
     private Uri saveImage(Bitmap image) {
-        //TODO - Should be processed in another thread
+        // Should be processed in another thread
         File imagesFolder = new File(requireActivity().getCacheDir(), "images");
         Uri uri = null;
         try {
-            imagesFolder.mkdirs();
             File file = new File(imagesFolder, "shared_image.png");
 
             FileOutputStream stream = new FileOutputStream(file);
