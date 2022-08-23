@@ -37,13 +37,15 @@ public class UtilityAdapter extends FirestoreAdapter<UtilityAdapter.ViewHolder> 
         holder.bind(getSnapshot(position), mListener);
     }
 
-    public interface OnUtilitySelectedListener {
-
-        void onUtilitySelected(DocumentSnapshot utility);
-
+    public DocumentSnapshot retrieveSnapshot(int position) {
+        return getSnapshot(position);
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public interface OnUtilitySelectedListener {
+        void onUtilitySelected(DocumentSnapshot utility);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private static final String TAG = "ViewHolder";
         private ItemUtilityBinding binding;
