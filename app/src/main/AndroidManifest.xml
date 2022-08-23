@@ -3,8 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="it.units.sim.savewater">
 
-    <!--        android:dataExtractionRules="@xml/data_extraction_rules"-->
-    <!--        android:fullBackupContent="@xml/backup_rules"-->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,6 +11,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SaveWater"
         tools:targetApi="31">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="it.units.sim.savewater"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <activity
             android:name=".ui.auth.AuthActivity"
             android:exported="false" />
