@@ -1,4 +1,4 @@
-package it.units.sim.savewater.ui;
+package it.units.sim.savewater.ui.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
