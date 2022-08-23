@@ -37,13 +37,13 @@ public class myCustomMarkerView extends MarkerView {
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
         markerTime.setText(mFormat.format(new Date((long) e.getX())));
-        markerIncrement.setText((int) e.getY() + " L");
+        markerIncrement.setText((int) e.getY() + R.string.liters_abbr);
 
         super.refreshContent(e, highlight);
     }
 
     @Override
     public MPPointF getOffset() {
-        return new MPPointF(-(getWidth()), -getHeight() / 2);
+        return new MPPointF(-(getWidth()), -getHeight() / 2f);
     }
 }
