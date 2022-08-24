@@ -1,4 +1,4 @@
-<img src="/app/src/main/res/drawable/save_water.png"  width="200" height="200"  />
+<img src="/app/src/main/res/drawable-v24/save_water.png"  width="200" height="200"  />
 
 # SaveWater
 
