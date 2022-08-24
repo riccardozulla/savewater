@@ -11,21 +11,21 @@
 
 ### Introduction
 
-Water crises are becoming more and more frequent and every day people die from lack of fresh water. WaterSaver's aim is to keep track of your water consumption helping you to control and reduce your impact.
+Hydro-crisis is becoming more and more frequent: people die every day due to lack of fresh water. WaterSaver's aim is to keep track of your water consumption helping you control and reduce your environmental footprint.
 
 ---
 
 ### Overview
 
-The application has the following functionalities:
+Exploit the following features by using the application:
 
-- [x] make an account and keep your credentials secure using Firebase Authentication
-- [x] sync your data across every device using Firebase Firestore
-- [x] allows you to keep tracking of your water consumption by adding "utilities" to your diary
-- [x] allows you to customize every pre-build "utility"
-- [x] allows you to delete already added "utility"
-- [x] allows you to share your stats by sending them as images through any social media channels
-- [x] change your info or delete your account
+- [x] sign up and store your credentials securely using Firebase Authentication
+- [x] sync your data across multiple devices using Firebase Firestore
+- [x] allow you to keep track of your water consumption by adding "utilities" to your diary
+- [x] allow you to customize every pre-build "utility"
+- [x] allow you to delete already added "utilities"
+- [x] allow you to share your stats by sending them as images through any social media platforms
+- [x] change your personal information or delete your account
 
 
 ---
