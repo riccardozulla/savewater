@@ -111,6 +111,9 @@ public class LineChartFragment extends SharingChartFragment<LineChart> implement
 
     private void updateData(List<DocumentSnapshot> documentSnapshots) {
         ArrayList<Entry> values = new ArrayList<>();
+        if (documentSnapshots.size() == 0) {
+            return;
+        }
 
         long minTime = Long.MAX_VALUE;
         long maxTime = 0;
@@ -140,8 +143,6 @@ public class LineChartFragment extends SharingChartFragment<LineChart> implement
         chart.setData(data);
         chart.notifyDataSetChanged();
         chart.invalidate();
-        chart.zoomToCenter(.5f, .5f);
-
     }
 
     private void updateTarget(Integer integer) {

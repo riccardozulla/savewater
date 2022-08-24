@@ -76,6 +76,10 @@ public class BarChartFragment extends SharingChartFragment<BarChart> {
 
     private void updateData(List<DocumentSnapshot> documentSnapshots) {
 
+        if (documentSnapshots.size() == 0) {
+            return;
+        }
+
         List<BarEntry> entries = documentSnapshots.stream().map(document -> document.toObject(Utility.class)).
                 map(utility -> new Entry(dateToHour(utility.getTimestamp().toDate()), utility.getWaterConsumption())).
                 collect(Collectors.groupingBy(Entry::getX, Collectors.summingInt(e -> (int) e.getY()))).entrySet().stream().
