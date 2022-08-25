@@ -21,4 +21,5 @@
     <dimen name="half_pie_margin">30dp</dimen>
     <dimen name="recycler_margin">10dp</dimen>
     <dimen name="item_padding">8dp</dimen>
+    <dimen name="description_item_width">250dp</dimen>
 </resources>
