@@ -56,10 +56,12 @@
     <string name="edit_password">Edit password</string>
     <string name="edit_target_water_consumption">Challenge yourself! Choose your target</string>
     <string name="prompt_water_target">Your target</string>
+    <string name="success_reset_password">Sent email to %1$s</string>
+
 
     <!-- delete dialog -->
     <string name="confirm_delete">Are you sure you want to delete this account?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="delete">Delete</string>
-</resources>
+    </resources>

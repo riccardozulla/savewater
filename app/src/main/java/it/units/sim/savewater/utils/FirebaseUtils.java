@@ -1,11 +1,15 @@
 package it.units.sim.savewater.utils;
 
 import android.util.Log;
+import android.view.View;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import it.units.sim.savewater.R;
 
 public class FirebaseUtils {
 
@@ -27,17 +31,30 @@ public class FirebaseUtils {
         }
     }
 
-    public static void deleteAccount() {
+    public static void deleteAccount(View view) {
         if (isAuthenticated()) {
             FirebaseAuth.getInstance().getCurrentUser().delete()
-                    .onSuccessTask(t -> userRef.delete())
-                    .addOnFailureListener(e -> Log.w(TAG, "Delete account failed"));
+                    .addOnSuccessListener(t -> {
+                        userRef.delete();
+                        Snackbar.make(view, "Account deleted", Snackbar.LENGTH_LONG).show();
+                    }).addOnFailureListener(e -> {
+                        Log.w(TAG, "Delete account failed");
+                        Snackbar.make(view, "Delete account failed", Snackbar.LENGTH_LONG).show();
+                    });
         }
     }
 
-    public static void sendResetPassword() {
-        FirebaseAuth.getInstance().sendPasswordResetEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail())
-                .addOnFailureListener(e -> Log.w(TAG, "Reset password failed"));
+    public static void sendResetPassword(View view) {
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                .addOnSuccessListener(unused -> {
+                    Log.d(TAG, "Sent email");
+                    Snackbar.make(view, String.format(view.getResources().getString(R.string.success_reset_password), email), Snackbar.LENGTH_LONG).show();
+                })
+                .addOnFailureListener(e -> {
+                    Log.w(TAG, "Reset password failed");
+                    Snackbar.make(view, "Reset password failed", Snackbar.LENGTH_LONG).show();
+                });
     }
 
     public static void changeEmail(String email) {

@@ -39,7 +39,7 @@ public class EditAccountFragment extends PreferenceFragmentCompat {
         });
         Preference changePassword = findPreference("edit_password");
         changePassword.setOnPreferenceClickListener(preference -> {
-            FirebaseUtils.sendResetPassword();
+            FirebaseUtils.sendResetPassword(requireView());
             return false;
         });
         Preference delete = findPreference("delete_account");
@@ -71,7 +71,7 @@ public class EditAccountFragment extends PreferenceFragmentCompat {
                 .setTitle(getResources().getString(R.string.delete))
                 .setMessage(getResources().getString(R.string.confirm_delete))
                 .setPositiveButton(getResources().getString(R.string.yes), (dialog, which) -> {
-                    FirebaseUtils.deleteAccount();
+                    FirebaseUtils.deleteAccount(requireView());
                     requireActivity().finish();
                     startActivity(new Intent(requireActivity(), AuthActivity.class));
                 }).setNegativeButton(getResources().getString(R.string.no), null)
