@@ -22,7 +22,7 @@ public class UtilityDetailFragment extends Fragment {
     public static final String ARG_TITLE = "title";
     public static final String ARG_WATER_CONSUMPTION = "water_consumption";
     public static final String ARG_DESCRIPTION = "description";
-    public static final int NUMBER_PICKER_MAX_VALUE = 500;
+    public static final int NUMBER_PICKER_MAX_VALUE = 1000;
     public static final int NUMBER_PICKER_MIN_VALUE = 0;
     private static final String TAG = "UtilityDetailFragment";
     private FragmentUtilityDetailBinding binding;
