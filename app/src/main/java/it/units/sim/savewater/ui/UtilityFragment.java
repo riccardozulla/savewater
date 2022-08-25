@@ -42,7 +42,7 @@ public class UtilityFragment extends Fragment implements UtilityAdapter.OnUtilit
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Query query = firebaseFirestore.collection("utilities");
+        Query query = firebaseFirestore.collection("utilities").orderBy("name");
 
         // RecyclerView
         mAdapter = new UtilityAdapter(query, this) {
