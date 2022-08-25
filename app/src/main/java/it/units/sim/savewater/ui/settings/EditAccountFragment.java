@@ -23,6 +23,8 @@ public class EditAccountFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.edit_account_preferences, rootKey);
 
+        Preference editEmail = findPreference("edit_email");
+
         EditTextPreference editName = findPreference("edit_name");
         editName.setOnPreferenceChangeListener((preference, newValue) -> {
             if (isValidName(newValue.toString()))
@@ -33,13 +35,6 @@ public class EditAccountFragment extends PreferenceFragmentCompat {
         editSurname.setOnPreferenceChangeListener((preference, newValue) -> {
             if (isValidName(newValue.toString()))
                 FirebaseUtils.userRef.update("surname", newValue);
-            return false;
-        });
-        EditTextPreference editEmail = findPreference("edit_email");
-        editEmail.setOnPreferenceChangeListener((preference, newValue) -> {
-            if (isValidEmail(newValue.toString())) {
-                FirebaseUtils.changeEmail(newValue.toString());
-            }
             return false;
         });
         Preference changePassword = findPreference("edit_password");
