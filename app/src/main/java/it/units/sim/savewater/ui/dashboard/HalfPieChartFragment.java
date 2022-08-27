@@ -103,7 +103,7 @@ public class HalfPieChartFragment extends SharingChartFragment<PieChart> {
             @Override
             public String getFormattedValue(float value) {
                 DecimalFormat format = new DecimalFormat("###,###,##0.0");
-                return format.format(value / waterTarget * 100) + " %";
+                return format.format(value) + " %";
             }
         });
         data.setValueTextSize(11f);
